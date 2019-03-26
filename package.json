@@ -1,0 +1,12 @@
+{
+  "name": "edr-test-runner",
+  "version": "0.0.1",
+  "description": "Runs tests for validation of EDR applications",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^4.1.1"
+  }
+}
