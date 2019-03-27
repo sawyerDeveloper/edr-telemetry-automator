@@ -1,6 +1,6 @@
 const fs = require('fs')
 const { resolve } = require('path')
-const { spawn } = require('child_process')
+const { exec } = require('child_process')
 const https = require('https')
 const { dialog } = require('electron').remote
 const os = require('os');
@@ -58,7 +58,7 @@ getTimeStamp = () => {
 }
 
 getUserName = () => {
-    return process.env.USER
+    return process.env.USER || process.env.USERNAME
 }
 
 getIpAddress = () => {
@@ -92,11 +92,11 @@ getProcessName = (_process = process) => {
 
 getProcessCommandLine = (_process = process) => {
     if(_process.argv){
-        return _process.argv.reduce((string, arg) => `${string}${arg}`)
+        return _process.argv.reduce((string, arg) => `${string} ${arg}`)
     }
     // ChildProcess
     if(_process.spawnargs){
-        return _process.spawnargs.reduce((string, arg) => `${string}${arg}`)
+        return _process.spawnargs.reduce((string, arg) => `${string} ${arg}`)
     }
     return ''
 }
@@ -108,7 +108,7 @@ getProcessCommandLine = (_process = process) => {
 // EDR tests
 
 startProcess = () => {
-    const hello = spawn('./hello.bin')
+    const hello = exec('./hello.sh')
     hello.stdout.on('data', (data) => {
         //console.log(`stdout: ${data}`)
     })
