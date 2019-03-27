@@ -11,7 +11,8 @@ let log = []
 let currentStep = 0
 
 runSequence = () => {
-    console.log('test :: Run Sequence')
+    currentStep = 0
+    log = []
     config.steps[0].step()
 }
 
@@ -20,7 +21,7 @@ downloadLog = () => {
         properties: ['openDirectory']
     })
     fs.writeFile(path+'/log.json', JSON.stringify(log), 'utf8', () => {
-        console.log('test :: Download Log')
+
     })
 }
 
@@ -46,7 +47,6 @@ nextStep = () => {
 
 endSequence = () => {
     document.getElementById("download").disabled = false
-    console.log('test :: End Sequence', log)
 }
 
 updateLog = (data) => {
@@ -110,15 +110,14 @@ getProcessCommandLine = (_process = process) => {
 startProcess = () => {
     const hello = exec('./hello.sh')
     hello.stdout.on('data', (data) => {
-        //console.log(`stdout: ${data}`)
+
     })
     
     hello.stderr.on('data', (data) => {
-        //console.log(`stderr: ${data}`)
+
     })
     
     hello.on('close', (code) => {
-        //console.log(`hello exited with code ${code}`)
         stepValidator({process: hello})
     })
 }
@@ -126,7 +125,6 @@ startProcess = () => {
 createFile = () => {
     fs.writeFile(resolve(config.file.location), config.file.data, (err) => {
         if (err) console.log(`createFile failure ${err}`)
-        //console.log(`createFile success ${resolve(config.file.location)}`)
         stepValidator({path: resolve(config.file.location), activity: 'create'})
     })
 }
@@ -134,7 +132,6 @@ createFile = () => {
 modifyFile = () => {
     fs.writeFile(resolve(config.file.location), config.file.modified, (err) => {
         if (err) console.log(`modifyFile failure ${err}`)
-        //console.log(`modifyFile success ${resolve(config.file.location)}`)
         stepValidator({path: resolve(config.file.location), activity: 'modify'})
     })
 }
@@ -142,17 +139,14 @@ modifyFile = () => {
 deleteFile = () => {
     fs.unlink(resolve(config.file.location), (err) => {
         if (err) console.log(`deleteFile failure ${err}`)
-        //console.log(`deleteFile success ${resolve(config.file.location)}`)
         stepValidator({path: resolve(config.file.location), activity: 'delete'})
     })
 }
 
 useNetwork = () => {
     https.get(config.network.url, (resp) => {
-    //let data = ''
-
     resp.on('data', (chunk) => {
-        //data += chunk
+        
     })
 
     resp.on('end', () => {
@@ -163,7 +157,7 @@ useNetwork = () => {
     })
 
     }).on('error', (err) => {
-        //console.log('Error: ' + err.message)
+
     })
 }
 
