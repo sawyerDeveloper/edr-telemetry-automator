@@ -47,6 +47,9 @@ nextStep = () => {
 
 endSequence = () => {
     document.getElementById("download").disabled = false
+    const img = document.getElementById("finished")
+    img.style.visibility = 'visible'
+
 }
 
 updateLog = (data) => {
