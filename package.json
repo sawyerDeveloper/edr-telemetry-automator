@@ -1,12 +1,18 @@
 {
-  "name": "edr-test-runner",
+  "name": "edr-telemetry-automator",
   "version": "0.0.1",
-  "description": "Runs tests for validation of EDR applications",
+  "description": "Automates telemetry creation for validation of EDR applications",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
   "devDependencies": {
-    "electron": "^4.1.1"
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "electron": "^4.1.1",
+    "electron-prebuilt-compile": "^4.0.0"
+  },
+  "dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   }
 }

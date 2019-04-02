@@ -1,6 +1,7 @@
-# edr-test-runner
+# EDR Telemetry Automator
 
-Easy and Fun!
+This is an automation tool that generates usage telemetry on a pc for validating EDR application testing. 
+It is a GUI and has a unique architecture where React.js and Node.js exist in the same context and even shared threads.  Everything ties together through Electron which empowers multiplatform desktop apps completely made from ES6.
 
 ## To Use
 
@@ -15,6 +16,6 @@ npm install
 npm start
 ```
 
-Press 'Run Sequence'.  
+Press 'Start Sequence'.  
 Once that is complete the 'Download Log' button will be enabled.
 Press 'Download Log' and select the folder you want the log saved to.

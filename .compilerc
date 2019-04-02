@@ -1,0 +1,10 @@
+{
+  "application/javascript": {
+    "plugins": ["transform-class-properties"],
+    "presets": ["es2016-node5", "react"],
+    "sourceMaps": "inline"
+  },
+  "text/less": {
+    "dumpLineNumbers": "comments"
+  }
+}
