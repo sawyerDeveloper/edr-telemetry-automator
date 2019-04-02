@@ -7,7 +7,7 @@ It is a GUI and has a unique architecture where React.js and Node.js exist in th
 
 ```bash
 # Clone this repository
-git clone git@bitbucket.org:sawyerdeveloper/edr-test-runner.git
+git clone git@bitbucket.org:sawyerdeveloper/edr-telemetry-automator.git
 # Go into the repository
 cd edr-test-runner
 # Install dependencies
