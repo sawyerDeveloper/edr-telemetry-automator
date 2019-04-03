@@ -35,7 +35,6 @@ class App extends Component {
             status: 'Complete!'
         })
         setTimeout(() => {
-            console.log('yo')
             this.setState({
                 status: 'Press Download Log or Start Sequence to begin.'
             })

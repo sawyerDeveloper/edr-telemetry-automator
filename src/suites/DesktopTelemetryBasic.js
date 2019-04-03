@@ -24,49 +24,51 @@ class DesktopTelemetryBasic {
             }
         }
     }
-    
+
     startProcess = (stepValidator) => {
         const hello = exec('./hello.sh')
-        hello.stdout.on('data', (data) => {
-
-        })
-
-        hello.stderr.on('data', (data) => {
-
-        })
-
+        hello.stdout.on('data', (data) => {})
+        hello.stderr.on('data', (data) => {})
         hello.on('close', (code) => {
-            stepValidator({ process: hello })
+            stepValidator(this.createProcessEvent({ 
+                process: hello 
+            }))
         })
     }
 
     createFile = (stepValidator) => {
         writeFile(resolve(this.getConfig().file.location), this.getConfig().file.data, (err) => {
             if (err) console.log(`createFile failure ${err}`)
-            stepValidator({ path: resolve(this.getConfig().file.location), activity: 'create' })
+            stepValidator(this.createFileEvent({ 
+                path: resolve(this.getConfig().file.location), 
+                activity: 'create' 
+            }))
         })
     }
 
     modifyFile = (stepValidator) => {
         writeFile(resolve(this.getConfig().file.location), this.getConfig().file.modified, (err) => {
             if (err) console.log(`modifyFile failure ${err}`)
-            stepValidator({ path: resolve(this.getConfig().file.location), activity: 'modify' })
+            stepValidator(this.createFileEvent({ 
+                path: resolve(this.getConfig().file.location), 
+                activity: 'modify' 
+            }))
         })
     }
 
     deleteFile = (stepValidator) => {
         unlink(resolve(this.getConfig().file.location), (err) => {
             if (err) console.log(`deleteFile failure ${err}`)
-            stepValidator({ path: resolve(this.getConfig().file.location), activity: 'delete' })
+            stepValidator(this.createFileEvent({ 
+                path: resolve(this.getConfig().file.location), 
+                activity: 'delete' 
+            }))
         })
     }
 
     useNetwork = (stepValidator) => {
         get(this.getConfig().network.url, (resp) => {
-            resp.on('data', (chunk) => {
-
-            })
-
+            resp.on('data', (chunk) => {})
             resp.on('end', () => {
                 stepValidator({
                     destinationAddressPort: `${resp.client._httpMessage.agent.protocol}//${resp.client._httpMessage.connection.servername}:${resp.client._httpMessage.agent.defaultPort}`,
@@ -76,56 +78,56 @@ class DesktopTelemetryBasic {
                 })
             })
 
-        }).on('error', (err) => {
-
-        })
+        }).on('error', (err) => {})
     }
 
     createFileEvent = (data = {}) => {
-        // If a prcess gets passed in - use that.  Otherwise use the main process
+        // If a process gets passed in - use that.  Otherwise use the main process
         const process = data.process ? data.process : window.process
         return {
             name: 'FileEvent',
-            timeStamp: getTimeStamp(),
+            timeStamp: Utils.getTimeStamp(),
             fullPath: data.path,
             activity: data.activity,
-            userName: getUserName(),
+            userName: Utils.getUserName(),
             process: {
-                name: getProcessName(process),
-                id: getProcessID(process),
-                commandLine: getProcessCommandLine(process)
+                name: Utils.getProcessName(process),
+                id: Utils.getProcessID(process),
+                commandLine: Utils.getProcessCommandLine(process)
             }
         }
     }
 
     createProcessEvent = (data = {}) => {
-        // If a prcess gets passed in - use that.  Otherwise use the main process
+        // If a process gets passed in - use that.  Otherwise use the main process
         const process = data.process ? data.process : process
         return {
             name: 'ProcessEvent',
-            timeStamp: getTimeStamp(),
-            userName: getUserName(),
+            timeStamp: Utils.getTimeStamp(),
+            userName: Utils.getUserName(),
             process: {
-                name: getProcessName(process),
-                id: getProcessID(process),
-                commandLine: getProcessCommandLine(process)
+                name: Utils.getProcessName(process),
+                id: Utils.getProcessID(process),
+                commandLine: Utils.getProcessCommandLine(process)
             }
         }
     }
 
     createNetworkEvent = (data = {}) => {
+        // If a process gets passed in - use that.  Otherwise use the main process
+        const process = data.process ? data.process : process
         return {
             name: 'NetworkEvent',
-            timeStamp: getTimeStamp(),
-            userName: getUserName(),
+            timeStamp: Utils.getTimeStamp(),
+            userName: Utils.getUserName(),
             destinationAddressPort: data.destinationAddressPort,
             sourceAddressPort: data.sourceAddressPort,
             sentDataSize: data.sentDataSize,
             protocol: data.protocol,
             process: {
-                name: getProcessName(process),
-                id: getProcessID(process),
-                commandLine: getProcessCommandLine(process)
+                name: Utils.getProcessName(process),
+                id: Utils.getProcessID(process),
+                commandLine: Utils.getProcessCommandLine(process)
             }
         }
     }

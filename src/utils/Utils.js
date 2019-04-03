@@ -1,11 +1,11 @@
 import os from 'os'
 class Utils{
 
-    getTimeStamp = () => {
+    static getTimeStamp = () => {
         return Date.now()
     }
     
-    getUserName = () => {
+    static getUserName = () => {
         return process.env.USER || process.env.USERNAME
     }
     
@@ -15,7 +15,7 @@ class Utils{
         for (var k in interfaces) {
             for (var k2 in interfaces[k]) {
                 var address = interfaces[k][k2]
-                if (address.family === 'IPv4' && !address.internal) {
+                if ((address.family === 'IPv6' || address.family === 'IPv4') && !address.internal) {
                     addresses.push(address.address)
                 }
             }
@@ -23,11 +23,11 @@ class Utils{
         return addresses[0]
     }
     
-    getProcessID = (_process = process) => {
+    static getProcessID = (_process = process) => {
         return _process.pid
     }
     
-    getProcessName = (_process = process) => {
+    static getProcessName = (_process = process) => {
         if (_process.execPath) {
             return _process.execPath
         }
@@ -38,7 +38,7 @@ class Utils{
         return ''
     }
     
-    getProcessCommandLine = (_process = process) => {
+    static getProcessCommandLine = (_process = process) => {
         if (_process.argv) {
             return _process.argv.reduce((string, arg) => `${string} ${arg}`)
         }
