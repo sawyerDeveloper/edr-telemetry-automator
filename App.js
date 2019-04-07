@@ -42,13 +42,11 @@ class App extends Component {
     }
 
     downloadLog = () => {
-
         if(!this.state.complete){
             this.setState({status: 'Please run a sequence before downloading a log.'})
         }else{
             this.ta.downloadLog()
         }
-        
     }
 
     render(){
