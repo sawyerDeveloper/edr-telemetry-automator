@@ -9,7 +9,7 @@ It is a GUI and has a unique architecture where React.js and Node.js exist in th
 # Clone this repository
 git clone git@bitbucket.org:sawyerdeveloper/edr-telemetry-automator.git
 # Go into the repository
-cd edr-test-runner
+cd edr-telemetry-automator
 # Install dependencies
 npm install
 # Run the app
