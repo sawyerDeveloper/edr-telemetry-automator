@@ -1,7 +1,7 @@
 import { exec } from 'child_process';
 import { writeFile, unlink } from 'fs';
 import { resolve } from 'path';
-import { get } from 'https';
+import { request } from 'https';
 import Utils from '../utils/Utils'
 
 class DesktopTelemetryBasic {
@@ -67,18 +67,25 @@ class DesktopTelemetryBasic {
     }
 
     useNetwork = (stepValidator) => {
-        get(this.getConfig().network.url, (resp) => {
-            resp.on('data', (chunk) => {})
-            resp.on('end', () => {
-                stepValidator({
-                    destinationAddressPort: `${resp.client._httpMessage.agent.protocol}//${resp.client._httpMessage.connection.servername}:${resp.client._httpMessage.agent.defaultPort}`,
-                    sourceAddressPort: Utils.getIpAddress(),
-                    sentDataSize: resp.client._httpMessage.connection.bytesRead + resp.client._httpMessage.connection.bytesWritten,
-                    protocol: resp.client._httpMessage.agent.protocol
-                })
-            })
+        const req = request({
+                hostname: "google.com",
+                port: 443,
+                path: "/",
+                method: "GET",
+                headers: {'Content-Type': 'application/json', 'Content-Length': 20}
+            },
+            res => {
+                stepValidator(this.createNetworkEvent({
+                    destinationAddressPort: `${req.socket.remoteAddress}:${req.socket.remotePort}`,
+                    sourceAddressPort: `${req.socket.localAddress}:${req.socket.localPort}`,
+                    sentDataSize: req.socket.bytesWritten,
+                    protocol: req.agent.protocol
+                }))
+            }
+        );
 
-        }).on('error', (err) => {})
+        req.write("{'RedCanaryIsNumber':1}");
+        req.end();
     }
 
     createFileEvent = (data = {}) => {
@@ -100,7 +107,7 @@ class DesktopTelemetryBasic {
 
     createProcessEvent = (data = {}) => {
         // If a process gets passed in - use that.  Otherwise use the main process
-        const process = data.process ? data.process : process
+        const process = data.process ? data.process : window.process
         return {
             name: 'ProcessEvent',
             timeStamp: Utils.getTimeStamp(),
@@ -115,7 +122,7 @@ class DesktopTelemetryBasic {
 
     createNetworkEvent = (data = {}) => {
         // If a process gets passed in - use that.  Otherwise use the main process
-        const process = data.process ? data.process : process
+        const process = data.process ? data.process : window.process
         return {
             name: 'NetworkEvent',
             timeStamp: Utils.getTimeStamp(),
